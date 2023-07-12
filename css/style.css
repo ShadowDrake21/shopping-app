@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 html {
   box-sizing: border-box;
@@ -77,16 +77,18 @@ body {
   border-radius: 15px;
   background-color: #fff;
   padding: 80px;
-  margin: 0 auto;
+  margin: 0 auto 40px;
 }
 
 .product__img {
   width: 250px;
   height: 250px;
+  object-fit: cover;
 }
 
 .product__right {
   max-width: 450px;
+  width: 100%;
 }
 
 .product__category {
@@ -95,6 +97,7 @@ body {
   background-color: #2596be;
   color: #fff;
   border-radius: 15px;
+  margin-right: 5px;
 }
 
 .product__title {
@@ -160,6 +163,3 @@ body {
 .product__btn:hover {
   background-color: #0c66ed;
 }
-
-/* font-family: 'Poppins', sans-serif;
-font-family: 'Roboto', sans-serif; */
