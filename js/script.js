@@ -1,8 +1,14 @@
+// Getting all require elements by ids
 const form = document.getElementById('form')
 const search = document.getElementById('search')
 const searchBtn = document.getElementById('searchBtn')
 const productContainer = document.getElementById('product__container')
+const searchSection = document.getElementById('search')
+const categoriesSection = document.getElementById('categories')
+const menu = document.getElementById('menu')
+const menuLinks = document.querySelectorAll('.menu__item-link')
 
+// Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
 const SEARCH_FRAGMENT = 'search?q='
 const CATEGORIES_FRAGMENT = 'category/'
@@ -12,22 +18,20 @@ renderMessage(
   `There is nothing here ;) <br>Type your query in the search field above`
 )
 
+// form event, using of fetch
 form.addEventListener('submit', async (e) => {
   e.preventDefault()
-
   productContainer.innerHTML = ''
-
   const searchTerm = e.target[0].value
 
   const products = await fetch(API_URL + SEARCH_FRAGMENT + searchTerm).then(
     (res) => res.json()
   )
-
   e.target[0].value = ''
-
   renderProducts(products.products)
 })
 
+// function of rendering product items to the screen
 function renderProducts(productArr) {
   if (!productArr.length) {
     renderMessage(
@@ -93,6 +97,7 @@ function renderProducts(productArr) {
   }
 }
 
+// function of message rendering
 function renderMessage(classPar, messagePar) {
   const message = document.createElement('p')
   message.classList.add(classPar)
@@ -100,3 +105,26 @@ function renderMessage(classPar, messagePar) {
   message.innerHTML = messagePar
   productContainer.appendChild(message)
 }
+
+// menu usage, tabs cooperation, content hidding/showing
+menu.addEventListener('click', (e) => {
+  if (!e.target.classList.contains('active')) {
+    const parent = e.target.closest('.menu__list')
+    const successors = parent.querySelectorAll('.menu__item')
+
+    successors.forEach((successor) => {
+      const successorChild = successor.children[0]
+      const classes = successorChild.classList
+      if (classes.contains('active')) {
+        successorChild.classList.remove('active')
+        const prevContent = document.getElementById(successorChild.dataset.to)
+        prevContent.classList.remove('active')
+        return
+      }
+    })
+
+    const newContent = document.getElementById(e.target.dataset.to)
+    e.target.classList.add('active')
+    newContent.classList.add('active')
+  }
+})

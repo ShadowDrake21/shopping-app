@@ -16,19 +16,21 @@
   <body>
     <header class="header">
       <div class="container">
-        <nav class="menu">
+        <nav class="menu" id="menu">
           <ul class="menu__list">
             <li class="menu__item">
-              <a href="#" class="menu__item-link">Products</a>
+              <div class="menu__item-link active" data-to="search">
+                Products
+              </div>
             </li>
             <li class="menu__item">
-              <a href="#" class="menu__item-link">Categories</a>
+              <div class="menu__item-link" data-to="categories">Categories</div>
             </li>
           </ul>
         </nav>
       </div>
     </header>
-    <section class="section" id="search">
+    <section class="section active" id="search">
       <form class="form" id="form">
         <input
           type="text"
@@ -44,7 +46,10 @@
 
       <div class="product__container" id="product__container"></div>
     </section>
-    <section class="section" id="categories"></section>
+
+    <section class="section" id="categories">
+      <h1>Categories</h1>
+    </section>
 
     <script src="./js/script.js"></script>
   </body>

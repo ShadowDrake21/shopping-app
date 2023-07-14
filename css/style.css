@@ -227,6 +227,7 @@ body {
 }
 
 .menu__item-link {
+  cursor: pointer;
   color: #ebf3fb;
   font-weight: 400;
   font-size: 18px;
@@ -234,6 +235,19 @@ body {
   transition: background-color 0.3s;
 }
 
+.menu__item-link.active {
+  background-color: #3774b4;
+  color: #ddd;
+}
+
 .menu__item-link:hover {
   background-color: #2596be;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
 }
