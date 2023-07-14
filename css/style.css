@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto&display=swap');
 
 html {
   box-sizing: border-box;
@@ -22,6 +22,22 @@ h6 {
 
 button {
   cursor: pointer;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -89,6 +105,7 @@ body {
 .product__right {
   max-width: 450px;
   width: 100%;
+  margin-left: 15px;
 }
 
 .product__category {
@@ -105,6 +122,19 @@ body {
   font-weight: 600;
   line-height: 1.25;
   margin: 15px 0 30px;
+}
+
+.product__price-old {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #191847;
+  text-decoration: line-through;
+}
+
+.product__price-old span {
+  margin-left: 3px;
+  text-decoration: none;
 }
 
 .product__price {
@@ -126,7 +156,7 @@ body {
   margin-bottom: 30px;
 }
 
-.product__rating {
+.product__additional {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -134,12 +164,12 @@ body {
   margin: 0 auto 40px;
 }
 
-.product__rating-rate,
-.product__rating-count {
+.product__additional-rate,
+.product__additional-stock {
   margin-left: 8px;
 }
 
-.product__rating-number {
+.product__additional-number {
   background-color: #063970;
   padding: 5px 10px;
   border-radius: 15px;
@@ -162,4 +192,48 @@ body {
 
 .product__btn:hover {
   background-color: #0c66ed;
+}
+
+.initial__message,
+.null__result-message {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.initial__message {
+  color: #063970;
+}
+
+.null__result-message {
+  color: red;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.header {
+  background-color: rgba(37, 150, 190, 0.6);
+}
+
+.menu__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style-type: none;
+}
+
+.menu__item-link {
+  color: #ebf3fb;
+  font-weight: 400;
+  font-size: 18px;
+  padding: 20px 15px;
+  transition: background-color 0.3s;
+}
+
+.menu__item-link:hover {
+  background-color: #2596be;
 }

@@ -14,54 +14,37 @@
     <title>Shopping app</title>
   </head>
   <body>
-    <form class="form" id="form">
-      <input
-        type="text"
-        id="search"
-        class="search"
-        placeholder="Search a product"
-        autocomplete="off"
-      />
-      <button type="submit" id="searchBtn" class="search-btn">
-        <i class="fas fa-search"></i>
-      </button>
-    </form>
-
-    <div class="product__container" id="product__container"></div>
-
-    <!-- <div class="product">
-      <div class="product__left">
-        <img
-          class="product__img"
-          src="https://content.rozetka.com.ua/goods/images/big/340692188.png"
-          alt=""
+    <header class="header">
+      <div class="container">
+        <nav class="menu">
+          <ul class="menu__list">
+            <li class="menu__item">
+              <a href="#" class="menu__item-link">Products</a>
+            </li>
+            <li class="menu__item">
+              <a href="#" class="menu__item-link">Categories</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="section" id="search">
+      <form class="form" id="form">
+        <input
+          type="text"
+          id="search"
+          class="search"
+          placeholder="Search a product"
+          autocomplete="off"
         />
-      </div>
-      <div class="product__right">
-        <span class="product__category">men's clothing</span>
-        <h3 class="product__title">
-          Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops
-        </h3>
-        <h6 class="product__price">109.95<span>$</span></h6>
-        <p class="product__descr">
-          Your perfect pack for everyday use and walks in the forest. Stash your
-          laptop (up to 15 inches) in the padded sleeve, your everyday
-        </p>
-        <div class="product__rating">
-          <div class="product__rating-text">
-            Rate:<span class="product__rating-number product__rating-rate"
-              >3.9</span
-            >
-          </div>
-          <div class="product__rating-text">
-            Count:<span class="product__rating-number product__rating-count"
-              >120</span
-            >
-          </div>
-        </div>
-        <button id="addToCart" class="product__btn">Add to cart</button>
-      </div>
-    </div> -->
+        <button type="submit" id="searchBtn" class="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+
+      <div class="product__container" id="product__container"></div>
+    </section>
+    <section class="section" id="categories"></section>
 
     <script src="./js/script.js"></script>
   </body>
