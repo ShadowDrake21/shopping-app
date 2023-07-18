@@ -16,35 +16,61 @@
   <body>
     <header class="header">
       <div class="container">
-        <nav class="menu">
+        <nav class="menu" id="menu">
           <ul class="menu__list">
             <li class="menu__item">
-              <a href="#" class="menu__item-link">Products</a>
+              <div class="menu__item-link active" data-to="productsSection">
+                Products
+              </div>
             </li>
             <li class="menu__item">
-              <a href="#" class="menu__item-link">Categories</a>
+              <div class="menu__item-link" data-to="categoriesSection">
+                Categories
+              </div>
             </li>
           </ul>
         </nav>
       </div>
     </header>
-    <section class="section" id="search">
-      <form class="form" id="form">
-        <input
-          type="text"
-          id="search"
-          class="search"
-          placeholder="Search a product"
-          autocomplete="off"
-        />
-        <button type="submit" id="searchBtn" class="search-btn">
-          <i class="fas fa-search"></i>
-        </button>
-      </form>
+    <section class="section active" id="productsSection">
+      <div class="container">
+        <h1 class="section__title">Products</h1>
+        <form class="form" id="productsForm">
+          <input
+            type="text"
+            id="productsSearch"
+            class="search"
+            placeholder="Search a product"
+            autocomplete="off"
+          />
+          <button type="submit" id="productsBtn" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
 
-      <div class="product__container" id="product__container"></div>
+        <div class="product__container" id="product__container"></div>
+      </div>
     </section>
-    <section class="section" id="categories"></section>
+
+    <section class="section" id="categoriesSection">
+      <div class="container">
+        <h1 class="section__title">Categories</h1>
+        <form class="form" id="categoriesForm">
+          <input
+            type="text"
+            class="search"
+            id="categoriesSearch"
+            autocomplete="off"
+            placeholder="Search a category"
+          />
+          <button type="submit" id="categoriesBtn" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+
+        <div class="categories__container" id="categories__container"></div>
+      </div>
+    </section>
 
     <script src="./js/script.js"></script>
   </body>
