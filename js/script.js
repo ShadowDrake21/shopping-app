@@ -4,19 +4,28 @@ const productsSearch = document.getElementById('productsSearch')
 const productsBtn = document.getElementById('productsBtn')
 const productContainer = document.getElementById('product__container')
 const productsSection = document.getElementById('productsSection')
-const categoriesSection = document.getElementById('categoriesSection')
-const menu = document.getElementById('menu')
-const menuLinks = document.querySelectorAll('.menu__item-link')
 
+const categoriesSection = document.getElementById('categoriesSection')
 const categoriesForm = document.getElementById('categoriesForm')
 const categoriesSearch = document.getElementById('categoriesSearch')
 const categoriesBtn = document.getElementById('categoriesBtn')
 const categoriesContainer = document.getElementById('categories__container')
 
+const usersSection = document.getElementById('usersSection')
+const usersForm = document.getElementById('usersForm')
+const usersSearch = document.getElementById('usersSearch')
+const usersBtn = document.getElementById('usersBtn')
+const usersContainer = document.getElementById('users__container')
+
+const title = productsSection.querySelector('.section__title')
+const menu = document.getElementById('menu')
+const menuLinks = document.querySelectorAll('.menu__item-link')
+
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
 const SEARCH_FRAGMENT = 'search?q='
 const CATEGORIES_FRAGMENT = 'category/'
+const USERS_API = 'https://dummyjson.com/users'
 
 renderMessage(
   'initial__message',
@@ -34,6 +43,7 @@ productsForm.addEventListener('submit', async (e) => {
     (res) => res.json()
   )
   e.target[0].value = ''
+  title.innerText = searchTerm
   renderProducts(products.products)
 })
 
@@ -138,6 +148,9 @@ menu.addEventListener('click', (e) => {
     if (e.target.dataset.to === 'categoriesSection') {
       getAllCategories()
     }
+    if (e.target.dataset.to === 'usersSection') {
+      getAllUsers()
+    }
   }
 })
 
@@ -176,7 +189,6 @@ async function getAllCategories() {
   const categories = await fetch(API_URL + 'categories').then((res) =>
     res.json()
   )
-  console.log(categories)
   renderAllCategories(categories)
 }
 
@@ -225,7 +237,68 @@ categoriesContainer.addEventListener('click', async (e) => {
     document.querySelector('[data-to="productsSection"]').click()
     renderProducts(products.products)
     window.scrollTo(0, productContainer.offsetTop)
-    const title = productsSection.querySelector('.section__title')
     title.innerText = category ? replacingDashes(category) : 'Error 404'
   }
 })
+
+async function getAllUsers() {
+  const allUsers = await fetch(USERS_API).then((res) => res.json())
+  renderUsers(allUsers.users)
+}
+
+function renderUsers(usersArr) {
+  console.log(usersArr)
+  usersContainer.innerHTML = ''
+  if (!usersArr.length) {
+    renderMessage(
+      'null__result-message',
+      `No users! There is an error!`,
+      usersContainer
+    )
+  } else {
+    console.log('works')
+    usersArr.map((user) => {
+      const {
+        id,
+        firstName,
+        lastName,
+        age,
+        gender,
+        email,
+        phone,
+        birthDate,
+        image,
+        address: { city },
+      } = user
+
+      const userWrapper = document.createElement('div')
+      userWrapper.classList.add('user__item')
+      userWrapper.id = `user${id}`
+
+      userWrapper.innerHTML = `
+    <div class="user__item-left">
+      <img
+        src="${image}"
+        class="user__item-img"
+        alt=""
+      />
+    </div>
+    <div class="user__item-right">
+      <div class="user__bio">
+        <p class="user__bio-name">First name: ${firstName}</p>
+        <p class="user__bio-name">Last name: ${lastName}</p>
+        <p class="user__bio-age">Age: ${age}</p>
+        <p class="user__bio-gender">Gender: ${gender}</p>
+
+        <p class="user__bio-email">Email: ${email}</p>
+        <p class="user__bio-phone">Phone: ${phone}</p>
+        <p class="user__bio-birthday">Birthday: ${birthDate}</p>
+        <p class="user__bio-city">City: ${city}</p>
+      </div>
+    </div>
+    `
+
+      usersContainer.appendChild(userWrapper)
+    })
+  }
+}

@@ -28,6 +28,11 @@
                 Categories
               </div>
             </li>
+            <li class="menu__item">
+              <div class="menu__item-link" data-to="usersSection">
+                All users
+              </div>
+            </li>
           </ul>
         </nav>
       </div>
@@ -69,6 +74,26 @@
         </form>
 
         <div class="categories__container" id="categories__container"></div>
+      </div>
+    </section>
+
+    <section class="section" id="usersSection">
+      <div class="container">
+        <h1 class="section__title">All users</h1>
+        <form class="form" id="usersForm">
+          <input
+            type="text"
+            class="search"
+            id="usersSearch"
+            autocomplete="off"
+            placeholder="Search a user"
+          />
+          <button type="submit" id="usersBtn" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+
+        <div class="users__container" id="users__container"></div>
       </div>
     </section>
 
