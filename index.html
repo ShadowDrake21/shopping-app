@@ -31,24 +31,43 @@
       </div>
     </header>
     <section class="section active" id="search">
-      <form class="form" id="form">
-        <input
-          type="text"
-          id="search"
-          class="search"
-          placeholder="Search a product"
-          autocomplete="off"
-        />
-        <button type="submit" id="searchBtn" class="search-btn">
-          <i class="fas fa-search"></i>
-        </button>
-      </form>
+      <div class="container">
+        <h1 class="section__title">Products</h1>
+        <form class="form" id="productsForm">
+          <input
+            type="text"
+            id="productsSearch"
+            class="search"
+            placeholder="Search a product"
+            autocomplete="off"
+          />
+          <button type="submit" id="productsBtn" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
 
-      <div class="product__container" id="product__container"></div>
+        <div class="product__container" id="product__container"></div>
+      </div>
     </section>
 
     <section class="section" id="categories">
-      <h1>Categories</h1>
+      <div class="container">
+        <h1 class="section__title">Categories</h1>
+        <form class="form" id="categoriesForm">
+          <input
+            type="text"
+            class="search"
+            id="categoriesSearch"
+            autocomplete="off"
+            placeholder="Search a category"
+          />
+          <button type="submit" id="categoriesBtn" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+
+        <div class="categories__container" id="categories__container"></div>
+      </div>
     </section>
 
     <script src="./js/script.js"></script>
