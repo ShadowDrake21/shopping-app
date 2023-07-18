@@ -63,6 +63,7 @@ body {
   text-align: center;
   margin: 40px 0 30px;
   font-size: 30px;
+  text-transform: capitalize;
 }
 
 .search {
@@ -271,6 +272,7 @@ body {
   box-shadow: 0px 24px 28px 9px rgba(179, 193, 217, 0.33);
   border-radius: 15px;
   background-color: #fff;
+  cursor: pointer;
 }
 
 .category__name {

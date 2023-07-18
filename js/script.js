@@ -3,8 +3,8 @@ const productsForm = document.getElementById('productsForm')
 const productsSearch = document.getElementById('productsSearch')
 const productsBtn = document.getElementById('productsBtn')
 const productContainer = document.getElementById('product__container')
-const searchSection = document.getElementById('search')
-const categoriesSection = document.getElementById('categories')
+const productsSection = document.getElementById('productsSection')
+const categoriesSection = document.getElementById('categoriesSection')
 const menu = document.getElementById('menu')
 const menuLinks = document.querySelectorAll('.menu__item-link')
 
@@ -39,6 +39,7 @@ productsForm.addEventListener('submit', async (e) => {
 
 // function of rendering product items to the screen
 function renderProducts(productArr) {
+  productContainer.innerHTML = ''
   if (!productArr.length) {
     renderMessage(
       'null__result-message',
@@ -134,7 +135,7 @@ menu.addEventListener('click', (e) => {
     e.target.classList.add('active')
     newContent.classList.add('active')
 
-    if (e.target.dataset.to === 'categories') {
+    if (e.target.dataset.to === 'categoriesSection') {
       getAllCategories()
     }
   }
@@ -181,6 +182,7 @@ async function getAllCategories() {
 
 // function to render all categories to the screen
 function renderAllCategories(categoriesArr) {
+  categoriesContainer.innerHTML = ''
   if (!categoriesArr.length) {
     renderMessage(
       'null__result-message',
@@ -195,18 +197,35 @@ function renderAllCategories(categoriesArr) {
 }
 
 // util function to replacing dashes with white spaces
-function replacingDashes(text) {
-  return text.replace(/-/g, ' ')
+function replacingDashes(text, replacingEl = ' ') {
+  return text.replace(/-/g, replacingEl)
 }
 
+// util function to create category element
 function creatingCategoryEl(category) {
-  category = replacingDashes(category)
-  const categoryWrapper = document.createElement('a')
-  categoryWrapper.href = `https://dummyjson.com/products/category/${category}`
+  id = replacingDashes(category, '__')
+  const categoryWrapper = document.createElement('div')
   categoryWrapper.classList.add('category')
+  categoryWrapper.dataset.category = category.toLowerCase()
+  category = replacingDashes(category)
 
   categoryWrapper.innerHTML = `
   <h3 class="category__name">${category}</h3>
   `
   return categoryWrapper
 }
+
+// function to see all products of choosen category
+categoriesContainer.addEventListener('click', async (e) => {
+  if (e.target.closest('div[data-category]')) {
+    const category = e.target.dataset.category
+    const products = await fetch(API_URL + CATEGORIES_FRAGMENT + category).then(
+      (res) => res.json()
+    )
+    document.querySelector('[data-to="productsSection"]').click()
+    renderProducts(products.products)
+    window.scrollTo(0, productContainer.offsetTop)
+    const title = productsSection.querySelector('.section__title')
+    title.innerText = category ? replacingDashes(category) : 'Error 404'
+  }
+})
