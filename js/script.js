@@ -20,6 +20,7 @@ const usersContainer = document.getElementById('users__container')
 const title = productsSection.querySelector('.section__title')
 const menu = document.getElementById('menu')
 const menuLinks = document.querySelectorAll('.menu__item-link')
+const menuList = document.getElementById('menu__list')
 
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
@@ -126,7 +127,7 @@ function renderMessage(classPar, messagePar, container) {
 }
 
 // menu usage, tabs cooperation, content hidding/showing
-menu.addEventListener('click', (e) => {
+menuList.addEventListener('click', (e) => {
   if (!e.target.classList.contains('active')) {
     const parent = e.target.closest('.menu__list')
     const successors = parent.querySelectorAll('.menu__item')
