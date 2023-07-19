@@ -23,9 +23,10 @@ const menuLinks = document.querySelectorAll('.menu__item-link')
 
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
+const USERS_API = 'https://dummyjson.com/users'
 const SEARCH_FRAGMENT = 'search?q='
 const CATEGORIES_FRAGMENT = 'category/'
-const USERS_API = 'https://dummyjson.com/users'
+const LIMIT_FRAGMENT = '?limit='
 
 renderMessage(
   'initial__message',
@@ -36,7 +37,7 @@ renderMessage(
 // products form event, using of fetch
 productsForm.addEventListener('submit', async (e) => {
   e.preventDefault()
-  productContainer.innerHTML = ''
+  cleanContent(productContainer)
   const searchTerm = e.target[0].value
 
   const products = await fetch(API_URL + SEARCH_FRAGMENT + searchTerm).then(
@@ -49,7 +50,7 @@ productsForm.addEventListener('submit', async (e) => {
 
 // function of rendering product items to the screen
 function renderProducts(productArr) {
-  productContainer.innerHTML = ''
+  cleanContent(productContainer)
   if (!productArr.length) {
     renderMessage(
       'null__result-message',
@@ -157,7 +158,7 @@ menu.addEventListener('click', (e) => {
 // categories form event, using of fetch
 categoriesForm.addEventListener('submit', async (e) => {
   e.preventDefault()
-  categoriesContainer.innerHTML = ''
+  cleanContent(categoriesContainer)
   const searchTerm = e.target[0].value
   let foundCategory = ''
 
@@ -165,7 +166,6 @@ categoriesForm.addEventListener('submit', async (e) => {
     res.json()
   )
   e.target[0].value = ''
-  console.log(categories)
 
   categories.forEach((category) => {
     if (replacingDashes(category).toLowerCase() === searchTerm.toLowerCase()) {
@@ -194,7 +194,8 @@ async function getAllCategories() {
 
 // function to render all categories to the screen
 function renderAllCategories(categoriesArr) {
-  categoriesContainer.innerHTML = ''
+  cleanContent(categoriesContainer)
+
   if (!categoriesArr.length) {
     renderMessage(
       'null__result-message',
@@ -242,13 +243,14 @@ categoriesContainer.addEventListener('click', async (e) => {
 })
 
 async function getAllUsers() {
-  const allUsers = await fetch(USERS_API).then((res) => res.json())
+  const allUsers = await fetch(USERS_API + LIMIT_FRAGMENT + 100).then((res) =>
+    res.json()
+  )
   renderUsers(allUsers.users)
 }
 
 function renderUsers(usersArr) {
-  console.log(usersArr)
-  usersContainer.innerHTML = ''
+  cleanContent(usersContainer)
   if (!usersArr.length) {
     renderMessage(
       'null__result-message',
@@ -256,49 +258,79 @@ function renderUsers(usersArr) {
       usersContainer
     )
   } else {
-    console.log('works')
     usersArr.map((user) => {
-      const {
-        id,
-        firstName,
-        lastName,
-        age,
-        gender,
-        email,
-        phone,
-        birthDate,
-        image,
-        address: { city },
-      } = user
-
-      const userWrapper = document.createElement('div')
-      userWrapper.classList.add('user__item')
-      userWrapper.id = `user${id}`
-
-      userWrapper.innerHTML = `
-    <div class="user__item-left">
-      <img
-        src="${image}"
-        class="user__item-img"
-        alt=""
-      />
-    </div>
-    <div class="user__item-right">
-      <div class="user__bio">
-        <p class="user__bio-name">First name: ${firstName}</p>
-        <p class="user__bio-name">Last name: ${lastName}</p>
-        <p class="user__bio-age">Age: ${age}</p>
-        <p class="user__bio-gender">Gender: ${gender}</p>
-
-        <p class="user__bio-email">Email: ${email}</p>
-        <p class="user__bio-phone">Phone: ${phone}</p>
-        <p class="user__bio-birthday">Birthday: ${birthDate}</p>
-        <p class="user__bio-city">City: ${city}</p>
-      </div>
-    </div>
-    `
-
-      usersContainer.appendChild(userWrapper)
+      usersContainer.appendChild(createUserEl(user))
     })
   }
+}
+
+usersForm.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  cleanContent(usersContainer)
+  const searchTerm = e.target[0].value
+
+  const { users } = await fetch(
+    USERS_API + '/' + SEARCH_FRAGMENT + searchTerm
+  ).then((res) => res.json())
+  e.target[0].value = ''
+  title.innerText = searchTerm
+  console.log(users)
+  if (!users.length) {
+    renderMessage(
+      'null__result-message',
+      `No users are found! Check something else or check your spelling!`,
+      usersContainer
+    )
+  } else {
+    users.map((user) => {
+      usersContainer.appendChild(createUserEl(user))
+    })
+  }
+})
+
+function createUserEl(user) {
+  const {
+    id,
+    firstName,
+    lastName,
+    age,
+    gender,
+    email,
+    phone,
+    birthDate,
+    image,
+    address: { city },
+  } = user
+
+  const userWrapper = document.createElement('div')
+  userWrapper.classList.add('user__item')
+  userWrapper.id = `user${id}`
+
+  userWrapper.innerHTML = `
+<div class="user__item-left">
+  <img
+    src="${image}"
+    class="user__item-img"
+    alt=""
+  />
+</div>
+<div class="user__item-right">
+  <div class="user__bio">
+    <p class="user__bio-name">First name: ${firstName}</p>
+    <p class="user__bio-name">Last name: ${lastName}</p>
+    <p class="user__bio-age">Age: ${age}</p>
+    <p class="user__bio-gender">Gender: ${gender}</p>
+
+    <p class="user__bio-email">Email: ${email}</p>
+    <p class="user__bio-phone">Phone: ${phone}</p>
+    <p class="user__bio-birthday">Birthday: ${birthDate}</p>
+    <p class="user__bio-city">City: ${city}</p>
+  </div>
+</div>
+`
+  return userWrapper
+}
+
+function cleanContent(container) {
+  container.innerHTML = ''
 }
