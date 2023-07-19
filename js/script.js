@@ -22,6 +22,10 @@ const menu = document.getElementById('menu')
 const menuLinks = document.querySelectorAll('.menu__item-link')
 const menuList = document.getElementById('menu__list')
 
+const authorizationList = document.getElementById('authorization__list')
+const loginCloseBtn = document.getElementById('loginClose')
+const popupBackground = document.querySelector('.popup__bg')
+
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
 const USERS_API = 'https://dummyjson.com/users'
@@ -330,6 +334,30 @@ function createUserEl(user) {
 </div>
 `
   return userWrapper
+}
+
+// Login popup
+authorizationList.addEventListener('click', (e) => {
+  const popupId = e.target.dataset.popup
+  const popupEl = document.getElementById(popupId)
+  setStylesPopup(popupEl, 'block')
+  setEventOnBackground(popupEl)
+})
+
+loginCloseBtn.addEventListener('click', (e) => {
+  const parent = e.target.closest('[id=login]')
+  setStylesPopup(parent, 'none')
+})
+
+function setEventOnBackground(popupEl) {
+  popupBackground.addEventListener('click', () => {
+    setStylesPopup(popupEl, 'none')
+  })
+}
+
+function setStylesPopup(popupEl, style) {
+  popupEl.style.display = style
+  popupBackground.style.display = style
 }
 
 function cleanContent(container) {

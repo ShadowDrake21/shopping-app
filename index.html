@@ -34,15 +34,25 @@
               </div>
             </li>
           </ul>
-          <ul class="authorization__list">
+          <ul class="authorization__list" id="authorization__list">
             <li class="authorization__item">
               <div class="authorization__item-link" data-popup="login">
-                Log-in <i class="fa fa-sign-in" aria-hidden="true"></i>
+                Log-in
+                <i
+                  class="fa fa-sign-in"
+                  aria-hidden="true"
+                  data-popup="login"
+                ></i>
               </div>
             </li>
             <li class="authorization__item">
               <div class="authorization__item-link" data-popup="signup">
-                Sign-up <i class="fa fa-user-plus" aria-hidden="true"></i>
+                Sign-up
+                <i
+                  class="fa fa-user-plus"
+                  aria-hidden="true"
+                  data-popup="signup"
+                ></i>
               </div>
             </li>
           </ul>
@@ -109,7 +119,7 @@
       </div>
     </section>
 
-    <div class="login__popup" id="loginPopup">
+    <div class="login__popup" id="login">
       <div class="login__inner">
         <h2 class="login__title">Log-in</h2>
         <form class="form login__form" id="loginForm">
