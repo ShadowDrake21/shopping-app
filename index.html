@@ -17,7 +17,7 @@
     <header class="header">
       <div class="container">
         <nav class="menu" id="menu">
-          <ul class="menu__list">
+          <ul class="menu__list" id="menu__list">
             <li class="menu__item">
               <div class="menu__item-link active" data-to="productsSection">
                 Products
@@ -26,6 +26,23 @@
             <li class="menu__item">
               <div class="menu__item-link" data-to="categoriesSection">
                 Categories
+              </div>
+            </li>
+            <li class="menu__item">
+              <div class="menu__item-link" data-to="usersSection">
+                All users
+              </div>
+            </li>
+          </ul>
+          <ul class="authorization__list">
+            <li class="authorization__item">
+              <div class="authorization__item-link" data-popup="login">
+                Log-in <i class="fa fa-sign-in" aria-hidden="true"></i>
+              </div>
+            </li>
+            <li class="authorization__item">
+              <div class="authorization__item-link" data-popup="signup">
+                Sign-up <i class="fa fa-user-plus" aria-hidden="true"></i>
               </div>
             </li>
           </ul>
@@ -71,6 +88,59 @@
         <div class="categories__container" id="categories__container"></div>
       </div>
     </section>
+
+    <section class="section" id="usersSection">
+      <div class="container">
+        <h1 class="section__title">All users</h1>
+        <form class="form" id="usersForm">
+          <input
+            type="text"
+            class="search"
+            id="usersSearch"
+            autocomplete="off"
+            placeholder="Search a user"
+          />
+          <button type="submit" id="usersBtn" class="search-btn">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+
+        <div class="users__container" id="users__container"></div>
+      </div>
+    </section>
+
+    <div class="login__popup" id="loginPopup">
+      <div class="login__inner">
+        <h2 class="login__title">Log-in</h2>
+        <form class="form login__form" id="loginForm">
+          <div class="login__input-wrapper">
+            <label for="loginName" class="login_label">Username:</label
+            ><input
+              type="text"
+              class="login__input"
+              id="loginName"
+              placeholder="Enter your username"
+            />
+          </div>
+          <div class="login__input-wrapper">
+            <label for="loginPassword" class="login_label">Password:</label
+            ><input
+              type="password"
+              class="login__input"
+              id="loginPassword"
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" class="login__btn" id="loginBtn">
+            Sign-in
+          </button>
+        </form>
+        <button type="button" id="loginClose" class="login__close-btn">
+          <i class="fa fa-window-close" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+    <div class="popup__bg"></div>
 
     <script src="./js/script.js"></script>
   </body>
