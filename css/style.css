@@ -213,7 +213,8 @@ input {
 }
 
 .initial__message,
-.null__result-message {
+.null__result-message,
+.success__result-message {
   text-align: center;
   font-size: 24px;
   font-weight: 700;

@@ -25,6 +25,10 @@ const menuList = document.getElementById('menu__list')
 const authorizationList = document.getElementById('authorization__list')
 const loginCloseBtn = document.getElementById('loginClose')
 const popupBackground = document.querySelector('.popup__bg')
+const loginBtn = document.getElementById('loginBtn')
+const loginForm = document.getElementById('loginForm')
+const loginName = document.getElementById('loginName')
+const loginPassword = document.getElementById('loginPassword')
 
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
@@ -248,10 +252,15 @@ categoriesContainer.addEventListener('click', async (e) => {
 })
 
 async function getAllUsers() {
+  const allUsers = await fetchAllUsers()
+  renderUsers(allUsers.users)
+}
+
+async function fetchAllUsers() {
   const allUsers = await fetch(USERS_API + LIMIT_FRAGMENT + 100).then((res) =>
     res.json()
   )
-  renderUsers(allUsers.users)
+  return allUsers
 }
 
 function renderUsers(usersArr) {
@@ -358,6 +367,78 @@ function setEventOnBackground(popupEl) {
 function setStylesPopup(popupEl, style) {
   popupEl.style.display = style
   popupBackground.style.display = style
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault()
+
+  const loginPopup = document.getElementById('login')
+  let thereIsName = false,
+    thereIsPass = false,
+    foundUser = {}
+  const name = loginName.value
+  const pass = loginPassword.value
+
+  const { users } = await fetchAllUsers()
+  users.forEach((user) => {
+    if (user.username === name) {
+      thereIsName = true
+      foundUser = user
+      console.log(foundUser)
+      return
+    }
+  })
+
+  if (thereIsName) {
+    const { password } = foundUser
+    thereIsPass = password === pass ? true : false
+  } else {
+    showResultPopupMessage(
+      loginPopup,
+      'null__result-message',
+      `User with that username is not found! <br>Try one more time`
+    )
+    return
+  }
+
+  if (thereIsName && thereIsPass) {
+    showResultPopupMessage(
+      loginPopup,
+      'success__result-message',
+      `Welcome back, ${name}!`
+    )
+
+    localStorage.setItem(
+      'profileData',
+      JSON.stringify(minimalizeObject(foundUser))
+    )
+    return
+  } else {
+    showResultPopupMessage(
+      loginPopup,
+      'null__result-message',
+      `Password is invalid! <br>Try one more time`
+    )
+    return
+  }
+})
+
+// 9uQFF1Lh
+
+function popupTimeout(popup) {
+  setTimeout(() => {
+    setStylesPopup(popup, 'none')
+  }, 3000)
+}
+
+function showResultPopupMessage(popupEl, messageClass, messageText) {
+  cleanContent(popupEl)
+  renderMessage(messageClass, messageText, popupEl)
+  popupTimeout(popupEl)
+}
+
+function minimalizeObject(oldObj) {
+  return { username: oldObj.username, password: oldObj.password }
 }
 
 function cleanContent(container) {
