@@ -34,18 +34,43 @@
               </div>
             </li>
           </ul>
-          <ul class="authorization__list">
+          <ul class="authorization__list" id="authorization__list">
             <li class="authorization__item">
-              <div class="authorization__item-link" data-popup="login">
-                Log-in <i class="fa fa-sign-in" aria-hidden="true"></i>
+              <div
+                class="authorization__item-link"
+                data-popupFunc="createLogin"
+                data-popupId="login"
+              >
+                Log-in
+                <i
+                  class="fa fa-sign-in"
+                  aria-hidden="true"
+                  data-popupId="login"
+                ></i>
               </div>
             </li>
             <li class="authorization__item">
-              <div class="authorization__item-link" data-popup="signup">
-                Sign-up <i class="fa fa-user-plus" aria-hidden="true"></i>
+              <div class="authorization__item-link" data-popupId="signup">
+                Sign-up
+                <i
+                  class="fa fa-user-plus"
+                  aria-hidden="true"
+                  data-popupId="signup"
+                ></i>
               </div>
             </li>
           </ul>
+          <div class="profile__header" id="profileHeader">
+            <div class="profile__header-left">
+              <img
+                src=""
+                alt=""
+                class="profile__header-img"
+                id="profileHeaderImage"
+              />
+            </div>
+            <span class="profile__header-name" id="profileHeaderName"></span>
+          </div>
         </nav>
       </div>
     </header>
@@ -109,7 +134,7 @@
       </div>
     </section>
 
-    <div class="login__popup" id="loginPopup">
+    <!-- <div class="login__popup" id="login">
       <div class="login__inner">
         <h2 class="login__title">Log-in</h2>
         <form class="form login__form" id="loginForm">
@@ -139,7 +164,7 @@
           <i class="fa fa-window-close" aria-hidden="true"></i>
         </button>
       </div>
-    </div>
+    </div> -->
     <div class="popup__bg"></div>
 
     <script src="./js/script.js"></script>

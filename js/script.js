@@ -22,6 +22,20 @@ const menu = document.getElementById('menu')
 const menuLinks = document.querySelectorAll('.menu__item-link')
 const menuList = document.getElementById('menu__list')
 
+const authorizationList = document.getElementById('authorization__list')
+const popupBackground = document.querySelector('.popup__bg')
+
+const profileHeader = document.getElementById('profileHeader')
+const profileHeaderImage = document.getElementById('profileHeaderImage')
+const profileHeaderName = document.getElementById('profileHeaderName')
+
+let loginCloseBtn,
+  loginBtn,
+  loginForm,
+  loginName,
+  loginPassword,
+  profileObj = {}
+
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
 const USERS_API = 'https://dummyjson.com/users'
@@ -34,6 +48,8 @@ renderMessage(
   `There is nothing here ;) <br>Type your query in the search field above`,
   productContainer
 )
+
+loadingFromLS()
 
 // products form event, using of fetch
 productsForm.addEventListener('submit', async (e) => {
@@ -244,10 +260,15 @@ categoriesContainer.addEventListener('click', async (e) => {
 })
 
 async function getAllUsers() {
+  const allUsers = await fetchAllUsers()
+  renderUsers(allUsers.users)
+}
+
+async function fetchAllUsers() {
   const allUsers = await fetch(USERS_API + LIMIT_FRAGMENT + 100).then((res) =>
     res.json()
   )
-  renderUsers(allUsers.users)
+  return allUsers
 }
 
 function renderUsers(usersArr) {
@@ -330,6 +351,190 @@ function createUserEl(user) {
 </div>
 `
   return userWrapper
+}
+
+// Login popup
+
+function createLogin() {
+  const popupWrapper = document.createElement('div')
+  popupWrapper.classList.add('login__popup')
+  popupWrapper.id = 'login'
+
+  popupWrapper.innerHTML = `
+      <div class="login__inner">
+        <h2 class="login__title">Log-in</h2>
+        <form class="form login__form" id="loginForm">
+          <div class="login__input-wrapper">
+            <label for="loginName" class="login_label">Username:</label
+            ><input
+              type="text"
+              class="login__input"
+              id="loginName"
+              placeholder="Enter your username"
+            />
+          </div>
+          <div class="login__input-wrapper">
+            <label for="loginPassword" class="login_label">Password:</label
+            ><input
+              type="password"
+              class="login__input"
+              id="loginPassword"
+              placeholder="Enter your password"
+            />
+          </div>
+          <button type="submit" class="login__btn" id="loginBtn">
+            Sign-in
+          </button>
+        </form>
+        <button type="button" id="loginClose" class="login__close-btn">
+          <i class="fa fa-window-close" aria-hidden="true"></i>
+        </button>
+      </div>
+  `
+
+  return popupWrapper
+}
+
+function createPopup(createPopupHTML) {
+  const popup = createPopupHTML()
+  document.body.appendChild(popup)
+  initPopupElements()
+}
+
+function initPopupElements() {
+  loginCloseBtn = document.getElementById('loginClose')
+  loginBtn = document.getElementById('loginBtn')
+  loginForm = document.getElementById('loginForm')
+  loginName = document.getElementById('loginName')
+  loginPassword = document.getElementById('loginPassword')
+}
+
+authorizationList.addEventListener('click', (e) => {
+  const popupFunc =
+    e.target.dataset.popupfunc === 'createLogin' ? createLogin : null
+  const popupId = e.target.dataset.popupid
+
+  createPopup(popupFunc)
+
+  const popupEl = document.getElementById(popupId)
+  console.log(popupId)
+  setStylesPopup(popupEl, 'block')
+  setEventOnBackground(popupEl)
+})
+
+function setEventOnBackground(popupEl) {
+  popupBackground.addEventListener('click', () => {
+    setStylesPopup(popupEl, 'none')
+  })
+}
+
+function setStylesPopup(popupEl, style) {
+  popupEl.style.display = style
+  popupBackground.style.display = style
+}
+
+document.addEventListener('click', (e) => {
+  const target = e.target.closest('[id=loginClose]')
+
+  if (target) {
+    console.log(target)
+    setStylesPopup(e.target.closest('[id=login]'), 'none')
+  }
+})
+
+document.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  console.log(e.target.closest('[id=loginForm]'))
+
+  if (e.target.closest('[id=loginForm]')) {
+    const loginPopup = document.getElementById('login')
+    let thereIsName = false,
+      thereIsPass = false,
+      foundUser = {}
+    const name = loginName.value
+    const pass = loginPassword.value
+
+    const { users } = await fetchAllUsers()
+    users.forEach((user) => {
+      if (user.username === name) {
+        thereIsName = true
+        foundUser = user
+        console.log(foundUser)
+        return
+      }
+    })
+
+    if (thereIsName) {
+      const { password } = foundUser
+      thereIsPass = password === pass ? true : false
+    } else {
+      showResultPopupMessage(
+        loginPopup,
+        'null__result-message',
+        `User with that username is not found! <br>Try one more time`
+      )
+      return
+    }
+
+    if (thereIsName && thereIsPass) {
+      showResultPopupMessage(
+        loginPopup,
+        'success__result-message',
+        `Welcome back, ${name}!`
+      )
+
+      localStorage.setItem(
+        'profileData',
+        JSON.stringify(minimalizeObject(foundUser))
+      )
+
+      loadingFromLS()
+      return
+    } else {
+      showResultPopupMessage(
+        loginPopup,
+        'null__result-message',
+        `Password is invalid! <br>Try one more time`
+      )
+      return
+    }
+  }
+})
+
+// 9uQFF1Lh
+
+function popupTimeout(popup) {
+  setTimeout(() => {
+    setStylesPopup(popup, 'none')
+  }, 3000)
+}
+
+function showResultPopupMessage(popupEl, messageClass, messageText) {
+  cleanContent(popupEl)
+  renderMessage(messageClass, messageText, popupEl)
+  popupTimeout(popupEl)
+}
+
+function minimalizeObject(oldObj) {
+  return {
+    username: oldObj.username,
+    password: oldObj.password,
+    img: oldObj.image,
+    firstName: oldObj.firstName,
+    lastName: oldObj.lastName,
+  }
+}
+
+function loadingFromLS() {
+  profileObj = JSON.parse(localStorage.getItem('profileData'))
+  if (!profileObj) {
+    return
+  } else {
+    authorizationList.style.display = 'none'
+    profileHeader.style.display = 'flex'
+    profileHeaderImage.src = profileObj.img
+    profileHeaderName.innerText = `${profileObj.firstName} ${profileObj.lastName}`
+  }
 }
 
 function cleanContent(container) {
