@@ -340,12 +340,12 @@ input {
   margin-right: 20px;
 }
 
-.login__popup {
-  display: none;
+.popup {
+  display: block;
   position: absolute;
   max-width: 600px;
   width: 100%;
-  padding: 40px 20px;
+  padding: 40px 50px;
   background-color: #4788e9;
   color: #fff;
   margin: 0 auto;
@@ -360,31 +360,38 @@ input {
   box-shadow: 7px 3px 20px 0px #000000;
 }
 
-.login__form {
+.popup__form {
   display: flex;
   flex-direction: column;
   margin-bottom: 0;
 }
 
-.login__inner {
+.popup__inner {
   position: relative;
 }
 
-.login_label {
+.popup__input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.popup_label {
+  white-space: nowrap;
   margin-right: 10px;
   cursor: pointer;
 }
 
-.login__input-wrapper {
-  margin-top: 20px;
-}
-
-.login__input {
+.popup__input {
+  max-width: 400px;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid #191847;
 }
 
-.login__btn {
+.popup__btn {
   margin-top: 20px;
   width: 170px;
   height: 50px;
@@ -397,11 +404,11 @@ input {
   transition: all 0.3s ease-in;
 }
 
-.login__btn:hover {
+.popup__btn:hover {
   background-color: #421a92;
 }
 
-.login__close-btn {
+.popup__close-btn {
   position: absolute;
   background-color: transparent;
   color: #fff;
@@ -412,7 +419,7 @@ input {
   right: -5px;
 }
 
-.login__close-btn:hover {
+.popup__close-btn:hover {
   color: #c3cbdc;
 }
 
