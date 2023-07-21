@@ -29,6 +29,8 @@ const profileHeader = document.getElementById('profileHeader')
 const profileHeaderImage = document.getElementById('profileHeaderImage')
 const profileHeaderName = document.getElementById('profileHeaderName')
 
+const signOutBtn = document.getElementById('profileExit')
+
 let loginCloseBtn,
   loginBtn,
   loginForm,
@@ -367,7 +369,6 @@ authorizationList.addEventListener('click', (e) => {
   createPopup(popupFunc)
 
   const popupEl = document.getElementById(popupId)
-  console.log(popupId)
   setStylesPopup(popupEl, 'block')
   setEventOnBackground(popupEl)
 })
@@ -460,7 +461,6 @@ document.addEventListener('click', (e) => {
   const target = e.target.closest('[id=loginClose]')
 
   if (target) {
-    console.log(target)
     setStylesPopup(e.target.closest('[id=login]'), 'none')
   }
 })
@@ -468,7 +468,6 @@ document.addEventListener('click', (e) => {
 // popup sybmit function
 document.addEventListener('submit', async (e) => {
   e.preventDefault()
-  console.log(e.target.closest('[id=loginForm]'))
 
   if (e.target.closest('[id=loginForm]')) {
     const loginPopup = document.getElementById('login')
@@ -527,8 +526,6 @@ document.addEventListener('submit', async (e) => {
   }
 })
 
-// 9uQFF1Lh
-
 // util function to  set timeout to popup hidding
 function popupTimeout(popup) {
   setTimeout(() => {
@@ -567,7 +564,25 @@ function loadingFromLS() {
   }
 }
 
+function deleteFromLS() {
+  localStorage.removeItem('profileData')
+}
+
+signOutBtn.addEventListener('click', () => {
+  setTimeout(() => {
+    setDisplay(profileHeader, 'none')
+    setDisplay(authorizationList, 'flex')
+    deleteFromLS()
+  }, 500)
+})
+
+function setDisplay(el, value) {
+  el.style.display = value
+}
+
 // util function to clean content of specified container
 function cleanContent(container) {
   container.innerHTML = ''
 }
+
+// 9uQFF1Lh

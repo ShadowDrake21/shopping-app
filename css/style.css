@@ -251,14 +251,17 @@ input {
   display: flex;
 }
 
-.menu__item-link,
-.authorization__item-link {
+.header__tab {
   cursor: pointer;
   color: #ebf3fb;
   font-weight: 400;
   font-size: 18px;
-  padding: 20px 15px;
   transition: background-color 0.3s;
+}
+
+.menu__item-link,
+.authorization__item-link {
+  padding: 20px 15px;
 }
 
 .menu__item-link.active {
@@ -266,8 +269,7 @@ input {
   color: #ddd;
 }
 
-.menu__item-link:hover,
-.authorization__item-link:hover {
+.header__tab:hover {
   background-color: #2596be;
 }
 
@@ -429,7 +431,14 @@ input {
 .profile__header {
   display: none;
   align-items: center;
+}
+
+.profile__header-inner {
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  height: 100%;
+  padding: 0 10px;
 }
 
 .profile__header-left {
@@ -442,4 +451,16 @@ input {
 .profile__header-img {
   height: 50px;
   object-fit: cover;
+}
+
+.profile__header-exit {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.profile__header-exit i {
+  margin-left: 5px;
 }
