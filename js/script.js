@@ -259,11 +259,13 @@ categoriesContainer.addEventListener('click', async (e) => {
   }
 })
 
+// util function to get all users and render them
 async function getAllUsers() {
   const allUsers = await fetchAllUsers()
   renderUsers(allUsers.users)
 }
 
+// fetch function to get all users
 async function fetchAllUsers() {
   const allUsers = await fetch(USERS_API + LIMIT_FRAGMENT + 100).then((res) =>
     res.json()
@@ -271,6 +273,7 @@ async function fetchAllUsers() {
   return allUsers
 }
 
+// function to render all users
 function renderUsers(usersArr) {
   cleanContent(usersContainer)
   if (!usersArr.length) {
@@ -286,30 +289,7 @@ function renderUsers(usersArr) {
   }
 }
 
-usersForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
-  cleanContent(usersContainer)
-  const searchTerm = e.target[0].value
-
-  const { users } = await fetch(
-    USERS_API + '/' + SEARCH_FRAGMENT + searchTerm
-  ).then((res) => res.json())
-  e.target[0].value = ''
-  title.innerText = searchTerm
-  console.log(users)
-  if (!users.length) {
-    renderMessage(
-      'null__result-message',
-      `No users are found! Check something else or check your spelling!`,
-      usersContainer
-    )
-  } else {
-    users.map((user) => {
-      usersContainer.appendChild(createUserEl(user))
-    })
-  }
-})
-
+// function to create user block
 function createUserEl(user) {
   const {
     id,
@@ -353,8 +333,53 @@ function createUserEl(user) {
   return userWrapper
 }
 
-// Login popup
+// users form event, search for the user
+usersForm.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  cleanContent(usersContainer)
+  const searchTerm = e.target[0].value
 
+  const { users } = await fetch(
+    USERS_API + '/' + SEARCH_FRAGMENT + searchTerm
+  ).then((res) => res.json())
+  e.target[0].value = ''
+  title.innerText = searchTerm
+  console.log(users)
+  if (!users.length) {
+    renderMessage(
+      'null__result-message',
+      `No users are found! Check something else or check your spelling!`,
+      usersContainer
+    )
+  } else {
+    users.map((user) => {
+      usersContainer.appendChild(createUserEl(user))
+    })
+  }
+})
+
+// authorization event, popup choosing
+authorizationList.addEventListener('click', (e) => {
+  const popupFunc =
+    e.target.dataset.popupfunc === 'createLogin' ? createLogin : null
+  const popupId = e.target.dataset.popupid
+
+  createPopup(popupFunc)
+
+  const popupEl = document.getElementById(popupId)
+  console.log(popupId)
+  setStylesPopup(popupEl, 'block')
+  setEventOnBackground(popupEl)
+})
+
+// main function of creating popup
+function createPopup(createPopupHTML) {
+  const popup = createPopupHTML()
+  document.body.appendChild(popup)
+  initPopupElements()
+}
+
+// create popup function, login popup initialization
 function createLogin() {
   const popupWrapper = document.createElement('div')
   popupWrapper.classList.add('login__popup')
@@ -395,12 +420,20 @@ function createLogin() {
   return popupWrapper
 }
 
-function createPopup(createPopupHTML) {
-  const popup = createPopupHTML()
-  document.body.appendChild(popup)
-  initPopupElements()
+// destroyer of popup
+function destroyPopup(popupId) {
+  const popup = document.getElementById(popupId)
+  popup.remove()
 }
 
+// util function to set timeout on destroyer function
+function destroyTimeout(popup) {
+  setTimeout(() => {
+    destroyPopup(popup)
+  }, 3100)
+}
+
+// util function to initialized all required elements of the popup
 function initPopupElements() {
   loginCloseBtn = document.getElementById('loginClose')
   loginBtn = document.getElementById('loginBtn')
@@ -409,30 +442,20 @@ function initPopupElements() {
   loginPassword = document.getElementById('loginPassword')
 }
 
-authorizationList.addEventListener('click', (e) => {
-  const popupFunc =
-    e.target.dataset.popupfunc === 'createLogin' ? createLogin : null
-  const popupId = e.target.dataset.popupid
-
-  createPopup(popupFunc)
-
-  const popupEl = document.getElementById(popupId)
-  console.log(popupId)
-  setStylesPopup(popupEl, 'block')
-  setEventOnBackground(popupEl)
-})
-
+// function to hide the background
 function setEventOnBackground(popupEl) {
   popupBackground.addEventListener('click', () => {
     setStylesPopup(popupEl, 'none')
   })
 }
 
+// util function to set styles to popup and background
 function setStylesPopup(popupEl, style) {
   popupEl.style.display = style
   popupBackground.style.display = style
 }
 
+// popup close btn function
 document.addEventListener('click', (e) => {
   const target = e.target.closest('[id=loginClose]')
 
@@ -442,6 +465,7 @@ document.addEventListener('click', (e) => {
   }
 })
 
+// popup sybmit function
 document.addEventListener('submit', async (e) => {
   e.preventDefault()
   console.log(e.target.closest('[id=loginForm]'))
@@ -459,7 +483,6 @@ document.addEventListener('submit', async (e) => {
       if (user.username === name) {
         thereIsName = true
         foundUser = user
-        console.log(foundUser)
         return
       }
     })
@@ -473,6 +496,7 @@ document.addEventListener('submit', async (e) => {
         'null__result-message',
         `User with that username is not found! <br>Try one more time`
       )
+      destroyTimeout(loginPopup.id)
       return
     }
 
@@ -489,6 +513,7 @@ document.addEventListener('submit', async (e) => {
       )
 
       loadingFromLS()
+      destroyTimeout(loginPopup.id)
       return
     } else {
       showResultPopupMessage(
@@ -496,6 +521,7 @@ document.addEventListener('submit', async (e) => {
         'null__result-message',
         `Password is invalid! <br>Try one more time`
       )
+      destroyTimeout(loginPopup.id)
       return
     }
   }
@@ -503,18 +529,21 @@ document.addEventListener('submit', async (e) => {
 
 // 9uQFF1Lh
 
+// util function to  set timeout to popup hidding
 function popupTimeout(popup) {
   setTimeout(() => {
     setStylesPopup(popup, 'none')
   }, 3000)
 }
 
+// util function to show final messages of the working with popup
 function showResultPopupMessage(popupEl, messageClass, messageText) {
   cleanContent(popupEl)
   renderMessage(messageClass, messageText, popupEl)
   popupTimeout(popupEl)
 }
 
+// util function to remove unnecessary fields of object
 function minimalizeObject(oldObj) {
   return {
     username: oldObj.username,
@@ -525,6 +554,7 @@ function minimalizeObject(oldObj) {
   }
 }
 
+// function to load data from LocalStorage
 function loadingFromLS() {
   profileObj = JSON.parse(localStorage.getItem('profileData'))
   if (!profileObj) {
@@ -537,6 +567,7 @@ function loadingFromLS() {
   }
 }
 
+// util function to clean content of specified container
 function cleanContent(container) {
   container.innerHTML = ''
 }
