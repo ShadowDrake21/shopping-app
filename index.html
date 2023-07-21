@@ -19,17 +19,23 @@
         <nav class="menu" id="menu">
           <ul class="menu__list" id="menu__list">
             <li class="menu__item">
-              <div class="menu__item-link active" data-to="productsSection">
+              <div
+                class="header__tab menu__item-link active"
+                data-to="productsSection"
+              >
                 Products
               </div>
             </li>
             <li class="menu__item">
-              <div class="menu__item-link" data-to="categoriesSection">
+              <div
+                class="header__tab menu__item-link"
+                data-to="categoriesSection"
+              >
                 Categories
               </div>
             </li>
             <li class="menu__item">
-              <div class="menu__item-link" data-to="usersSection">
+              <div class="header__tab menu__item-link" data-to="usersSection">
                 All users
               </div>
             </li>
@@ -37,7 +43,7 @@
           <ul class="authorization__list" id="authorization__list">
             <li class="authorization__item">
               <div
-                class="authorization__item-link"
+                class="header__tab authorization__item-link"
                 data-popupFunc="createLogin"
                 data-popupId="login"
               >
@@ -50,7 +56,10 @@
               </div>
             </li>
             <li class="authorization__item">
-              <div class="authorization__item-link" data-popupId="signup">
+              <div
+                class="header__tab authorization__item-link"
+                data-popupId="signup"
+              >
                 Sign-up
                 <i
                   class="fa fa-user-plus"
@@ -61,15 +70,21 @@
             </li>
           </ul>
           <div class="profile__header" id="profileHeader">
-            <div class="profile__header-left">
-              <img
-                src=""
-                alt=""
-                class="profile__header-img"
-                id="profileHeaderImage"
-              />
+            <div class="header__tab profile__header-inner">
+              <div class="profile__header-left">
+                <img
+                  src=""
+                  alt=""
+                  class="profile__header-img"
+                  id="profileHeaderImage"
+                />
+              </div>
+              <span class="profile__header-name" id="profileHeaderName"></span>
             </div>
-            <span class="profile__header-name" id="profileHeaderName"></span>
+            <div class="header__tab profile__header-exit" id="profileExit">
+              Sign-out
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
           </div>
         </nav>
       </div>
