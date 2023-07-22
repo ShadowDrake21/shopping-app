@@ -50,6 +50,8 @@ const USERS_API = 'https://dummyjson.com/users'
 const SEARCH_FRAGMENT = 'search?q='
 const CATEGORIES_FRAGMENT = 'category/'
 const LIMIT_FRAGMENT = '?limit='
+const DEFAULT_IMAGE =
+  'https://theculturednerd.org/wp-content/uploads/2021/10/hayden-christensen-star-wars.jpeg'
 
 renderMessage(
   'initial__message',
@@ -390,6 +392,7 @@ function initPopupElements(popupId) {
   if (popupId === 'login') {
     initLoginElements()
   } else if (popupId === 'signup') {
+    initSignupElements()
   }
 }
 
@@ -441,7 +444,7 @@ function createLogin() {
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" class="popup__btn" id="loginBtn">
+          <button type="submit" class="popup__btn" id="loginBtn" data-action='signup'>
             Sign-in
           </button>
         </form>
@@ -510,7 +513,7 @@ function createSignup() {
           placeholder="Enter your password"
         />
       </div>
-      <button type="submit" class="popup__btn" id="signupBtn">
+      <button type="submit" class="popup__btn" id="signupBtn" data-action='signup'>
         Sign-up
       </button>
     </form>
@@ -560,11 +563,13 @@ document.addEventListener('click', (e) => {
   }
 })
 
+document.addEventListener('submit', (e) => {
+  e.preventDefault()
+})
+
 // popup sybmit function
 document.addEventListener('submit', async (e) => {
-  e.preventDefault()
-
-  if (e.target.closest('[id=loginForm]')) {
+  if (e.target.closest('#loginForm')) {
     const loginPopup = document.getElementById('login')
     let thereIsName = false,
       thereIsPass = false,
@@ -601,12 +606,10 @@ document.addEventListener('submit', async (e) => {
         `Welcome back, ${name}!`
       )
 
-      localStorage.setItem(
-        'profileData',
-        JSON.stringify(minimalizeObject(foundUser))
-      )
+      savingIntoLS('profileData', minimalizeObject(foundUser))
 
       loadingFromLS()
+
       destroyTimeout(loginPopup.id)
       return
     } else {
@@ -620,6 +623,90 @@ document.addEventListener('submit', async (e) => {
     }
   }
 })
+
+document.addEventListener('change', (e) => {
+  const input = e.target
+  if (input === signupEmail) {
+    if (validateEmail(input.value)) {
+      input.style.border = '1px solid #191847'
+      signupBtn.disabled = false
+    } else {
+      input.style.border = '1px solid red'
+      signupBtn.disabled = true
+    }
+  }
+})
+
+document.addEventListener('focusout', (e) => {
+  const input = e.target
+  const ifStatement = input.classList.contains('popup__input')
+
+  if (ifStatement && input.value.length > 0) {
+    const btn = input.closest('.popup__form').querySelector('[data-action]')
+    input.style.border = '1px solid #191847'
+    btn.disabled = false
+  }
+
+  if (ifStatement && !input.value.length) {
+    const btn = input.closest('.popup__form').querySelector('[data-action]')
+    input.style.border = '1px solid red'
+    btn.disabled = true
+  }
+})
+
+document.addEventListener('submit', async (e) => {
+  const signupForm = e.target.closest('#signupForm')
+
+  if (signupForm) {
+    const signupPopup = signupForm.closest('#signup')
+    const creationObj = {
+      firstName: signupFn.value,
+      lastName: signupLn.value,
+      email: signupEmail.value,
+      username: signupName.value,
+      password: signupPassword.value,
+      image: DEFAULT_IMAGE,
+    }
+
+    const newUser = await addNewUser(creationObj)
+
+    console.log(newUser)
+    showResultPopupMessage(
+      signupPopup,
+      'success__result-message',
+      `Welcome, ${newUser.username}!<br> We're glad to see you here!`
+    )
+
+    savingIntoLS('profileData', newUser)
+    loadingFromLS()
+    destroyTimeout(signupPopup.id)
+  }
+})
+
+async function addNewUser(newUser) {
+  const url = 'https://dummyjson.com/users/add'
+  const settings = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newUser),
+  }
+
+  try {
+    const fetchResponse = await fetch(url, settings)
+    const data = await fetchResponse.json()
+    return data
+  } catch (e) {
+    return e
+  }
+}
+
+function validateEmail(email) {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+}
 
 // util function to  set timeout to popup hidding
 function popupTimeout(popup) {
@@ -640,10 +727,14 @@ function minimalizeObject(oldObj) {
   return {
     username: oldObj.username,
     password: oldObj.password,
-    img: oldObj.image,
+    image: oldObj.image,
     firstName: oldObj.firstName,
     lastName: oldObj.lastName,
   }
+}
+
+function savingIntoLS(key, value) {
+  localStorage.setItem(key, JSON.stringify(value))
 }
 
 // function to load data from LocalStorage
@@ -654,7 +745,7 @@ function loadingFromLS() {
   } else {
     authorizationList.style.display = 'none'
     profileHeader.style.display = 'flex'
-    profileHeaderImage.src = profileObj.img
+    profileHeaderImage.src = profileObj.image
     profileHeaderName.innerText = `${profileObj.firstName} ${profileObj.lastName}`
   }
 }

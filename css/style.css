@@ -389,6 +389,7 @@ input {
   width: 100%;
   border-radius: 5px;
   border: 1px solid #191847;
+  color: black;
 }
 
 .popup__btn {
@@ -406,6 +407,13 @@ input {
 
 .popup__btn:hover {
   background-color: #421a92;
+}
+
+.popup__btn:disabled {
+  background-color: #c3cbdc;
+  border: #c3cbdc;
+  color: #ddd;
+  cursor: not-allowed;
 }
 
 .popup__close-btn {
@@ -449,15 +457,20 @@ input {
 }
 
 .profile__header-left {
+  height: 60px;
   border: 2px solid #191847;
   background-color: #0c66ed;
   border-radius: 50%;
   margin-right: 10px;
+  overflow: hidden;
 }
 
 .profile__header-img {
-  height: 50px;
+  border-radius: 50%;
+  height: 60px;
   object-fit: cover;
+  overflow: hidden;
+  margin-top: -5px;
 }
 
 .profile__header-exit {
