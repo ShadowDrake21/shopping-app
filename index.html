@@ -58,6 +58,7 @@
             <li class="authorization__item">
               <div
                 class="header__tab authorization__item-link"
+                data-popupFunc="createSignup"
                 data-popupId="signup"
               >
                 Sign-up
@@ -149,33 +150,60 @@
       </div>
     </section>
 
-    <!-- <div class="login__popup" id="login">
-      <div class="login__inner">
-        <h2 class="login__title">Log-in</h2>
-        <form class="form login__form" id="loginForm">
-          <div class="login__input-wrapper">
-            <label for="loginName" class="login_label">Username:</label
+    <!-- <div class="popup" id="signup">
+      <div class="popup__inner">
+        <h2 class="popup__title">Sign-up</h2>
+        <form class="form popup__form" id="signupForm">
+          <div class="popup__input-wrapper">
+            <label for="signupEmail" class="popup_label">Email:</label
             ><input
               type="text"
-              class="login__input"
-              id="loginName"
+              class="popup__input"
+              id="signupEmail"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div class="popup__input-wrapper">
+            <label for="signupFn" class="popup_label">First name:</label
+            ><input
+              type="text"
+              class="popup__input"
+              id="signupFn"
+              placeholder="Enter your first name"
+            />
+          </div>
+          <div class="popup__input-wrapper">
+            <label for="signupLn" class="popup_label">Last name:</label
+            ><input
+              type="text"
+              class="popup__input"
+              id="signupLn"
+              placeholder="Enter your last name"
+            />
+          </div>
+          <div class="popup__input-wrapper">
+            <label for="signupName" class="popup_label">Username:</label
+            ><input
+              type="text"
+              class="popup__input"
+              id="signupName"
               placeholder="Enter your username"
             />
           </div>
-          <div class="login__input-wrapper">
-            <label for="loginPassword" class="login_label">Password:</label
+          <div class="popup__input-wrapper">
+            <label for="signupPassword" class="popup_label">Password:</label
             ><input
               type="password"
-              class="login__input"
-              id="loginPassword"
+              class="popup__input"
+              id="signupPassword"
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" class="login__btn" id="loginBtn">
-            Sign-in
+          <button type="submit" class="popup__btn" id="signupBtn">
+            Sign-up
           </button>
         </form>
-        <button type="button" id="loginClose" class="login__close-btn">
+        <button type="button" id="signupClose" class="popup__close-btn">
           <i class="fa fa-window-close" aria-hidden="true"></i>
         </button>
       </div>

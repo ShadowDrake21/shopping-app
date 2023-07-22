@@ -31,12 +31,18 @@ const profileHeaderName = document.getElementById('profileHeaderName')
 
 const signOutBtn = document.getElementById('profileExit')
 
-let loginCloseBtn,
-  loginBtn,
-  loginForm,
-  loginName,
-  loginPassword,
-  profileObj = {}
+let loginCloseBtn, loginBtn, loginForm, loginName, loginPassword
+
+let signupCloseBtn,
+  signupBtn,
+  signupForm,
+  signupEmail,
+  signupFn,
+  signupLn,
+  signupName,
+  signupPassword
+
+let profileObj = {}
 
 // Constants for fetching
 const API_URL = 'https://dummyjson.com/products/'
@@ -44,6 +50,8 @@ const USERS_API = 'https://dummyjson.com/users'
 const SEARCH_FRAGMENT = 'search?q='
 const CATEGORIES_FRAGMENT = 'category/'
 const LIMIT_FRAGMENT = '?limit='
+const DEFAULT_IMAGE =
+  'https://theculturednerd.org/wp-content/uploads/2021/10/hayden-christensen-star-wars.jpeg'
 
 renderMessage(
   'initial__message',
@@ -346,7 +354,6 @@ usersForm.addEventListener('submit', async (e) => {
   ).then((res) => res.json())
   e.target[0].value = ''
   title.innerText = searchTerm
-  console.log(users)
   if (!users.length) {
     renderMessage(
       'null__result-message',
@@ -363,57 +370,86 @@ usersForm.addEventListener('submit', async (e) => {
 // authorization event, popup choosing
 authorizationList.addEventListener('click', (e) => {
   const popupFunc =
-    e.target.dataset.popupfunc === 'createLogin' ? createLogin : null
-  const popupId = e.target.dataset.popupid
+    e.target.dataset.popupfunc === 'createLogin' ? createLogin : createSignup
+  const popupData = e.target.dataset.popupid
 
-  createPopup(popupFunc)
+  createPopup(popupFunc, popupData)
 
-  const popupEl = document.getElementById(popupId)
+  const popupEl = document.querySelector(`[data-popup=${popupData}`)
   setStylesPopup(popupEl, 'block')
   setEventOnBackground(popupEl)
 })
 
 // main function of creating popup
-function createPopup(createPopupHTML) {
+function createPopup(createPopupHTML, popupId) {
   const popup = createPopupHTML()
   document.body.appendChild(popup)
-  initPopupElements()
+  initPopupElements(popupId)
+}
+
+// util function to initialized all required elements of the popup
+function initPopupElements(popupId) {
+  if (popupId === 'login') {
+    initLoginElements()
+  } else if (popupId === 'signup') {
+    initSignupElements()
+  }
+}
+
+function initLoginElements() {
+  loginCloseBtn = document.getElementById('loginClose')
+  loginBtn = document.getElementById('loginBtn')
+  loginForm = document.getElementById('loginForm')
+  loginName = document.getElementById('loginName')
+  loginPassword = document.getElementById('loginPassword')
+}
+
+function initSignupElements() {
+  signupCloseBtn = document.getElementById('signupClose')
+  signupBtn = document.getElementById('signupBtn')
+  signupForm = document.getElementById('signupForm')
+  signupEmail = document.getElementById('signupEmail')
+  signupFn = document.getElementById('signupFn')
+  signupLn = document.getElementById('signupLn')
+  signupName = document.getElementById('signupName')
+  signupPassword = document.getElementById('signupPassword')
 }
 
 // create popup function, login popup initialization
 function createLogin() {
   const popupWrapper = document.createElement('div')
-  popupWrapper.classList.add('login__popup')
+  popupWrapper.classList.add('popup')
   popupWrapper.id = 'login'
+  popupWrapper.dataset.popup = 'login'
 
   popupWrapper.innerHTML = `
-      <div class="login__inner">
-        <h2 class="login__title">Log-in</h2>
-        <form class="form login__form" id="loginForm">
-          <div class="login__input-wrapper">
-            <label for="loginName" class="login_label">Username:</label
+      <div class="popup__inner">
+        <h2 class="popup__title">Log-in</h2>
+        <form class="form popup__form" id="loginForm">
+          <div class="popup__input-wrapper">
+            <label for="loginName" class="popup_label">Username:</label
             ><input
               type="text"
-              class="login__input"
+              class="popup__input"
               id="loginName"
               placeholder="Enter your username"
             />
           </div>
-          <div class="login__input-wrapper">
-            <label for="loginPassword" class="login_label">Password:</label
+          <div class="popup__input-wrapper">
+            <label for="loginPassword" class="popup_label">Password:</label
             ><input
               type="password"
-              class="login__input"
+              class="popup__input"
               id="loginPassword"
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" class="login__btn" id="loginBtn">
+          <button type="submit" class="popup__btn" id="loginBtn" data-action='signup'>
             Sign-in
           </button>
         </form>
-        <button type="button" id="loginClose" class="login__close-btn">
-          <i class="fa fa-window-close" aria-hidden="true"></i>
+        <button type="button" data-action="popup__close" class="popup__close-btn">
+          <i class="fa fa-window-close" data-action="popup__close" aria-hidden="true"></i>
         </button>
       </div>
   `
@@ -421,10 +457,79 @@ function createLogin() {
   return popupWrapper
 }
 
+// create popup function, login popup initialization
+function createSignup() {
+  const popupWrapper = document.createElement('div')
+  popupWrapper.classList.add('popup')
+  popupWrapper.id = 'signup'
+  popupWrapper.dataset.popup = 'signup'
+
+  popupWrapper.innerHTML = `
+  <div class="popup__inner">
+    <h2 class="popup__title">Sign-up</h2>
+    <form class="form popup__form" id="signupForm">
+      <div class="popup__input-wrapper">
+        <label for="signupEmail" class="popup_label">Email:</label
+        ><input
+          type="text"
+          class="popup__input"
+          id="signupEmail"
+          placeholder="Enter your email"
+          />
+      </div>
+      <div class="popup__input-wrapper">
+        <label for="signupFn" class="popup_label">First name:</label
+        ><input
+          type="text"
+          class="popup__input"
+          id="signupFn"
+          placeholder="Enter your first name"
+        />
+      </div>
+      <div class="popup__input-wrapper">
+        <label for="signupLn" class="popup_label">Last name:</label
+        ><input
+          type="text"
+          class="popup__input"
+          id="signupLn"
+          placeholder="Enter your last name"
+        />
+      </div>
+      <div class="popup__input-wrapper">
+        <label for="signupName" class="popup_label">Username:</label
+        ><input
+          type="text"
+          class="popup__input"
+          id="signupName"
+          placeholder="Enter your username"
+        />
+      </div>
+      <div class="popup__input-wrapper">
+        <label for="signupPassword" class="popup_label">Password:</label
+        ><input
+          type="password"
+          class="popup__input"
+          id="signupPassword"
+          placeholder="Enter your password"
+        />
+      </div>
+      <button type="submit" class="popup__btn" id="signupBtn" data-action='signup'>
+        Sign-up
+      </button>
+    </form>
+    <button type="button" data-action="popup__close" class="popup__close-btn">
+      <i class="fa fa-window-close" data-action="popup__close" aria-hidden="true"></i>
+    </button>
+  </div>
+  `
+
+  return popupWrapper
+}
+
 // destroyer of popup
-function destroyPopup(popupId) {
-  const popup = document.getElementById(popupId)
-  popup.remove()
+function destroyPopup() {
+  const popup = document.querySelector('[data-popup]')
+  popup?.remove()
 }
 
 // util function to set timeout on destroyer function
@@ -434,19 +539,11 @@ function destroyTimeout(popup) {
   }, 3100)
 }
 
-// util function to initialized all required elements of the popup
-function initPopupElements() {
-  loginCloseBtn = document.getElementById('loginClose')
-  loginBtn = document.getElementById('loginBtn')
-  loginForm = document.getElementById('loginForm')
-  loginName = document.getElementById('loginName')
-  loginPassword = document.getElementById('loginPassword')
-}
-
 // function to hide the background
 function setEventOnBackground(popupEl) {
   popupBackground.addEventListener('click', () => {
-    setStylesPopup(popupEl, 'none')
+    popupBackground.style.display = 'none'
+    destroyPopup(popupEl)
   })
 }
 
@@ -458,18 +555,21 @@ function setStylesPopup(popupEl, style) {
 
 // popup close btn function
 document.addEventListener('click', (e) => {
-  const target = e.target.closest('[id=loginClose]')
-
-  if (target) {
-    setStylesPopup(e.target.closest('[id=login]'), 'none')
+  const target = e.target
+  if (target.dataset.action && target.dataset.action === 'popup__close') {
+    const popup = target.closest('[data-popup]')
+    setStylesPopup(popup, 'none')
+    destroyPopup(popup.id)
   }
+})
+
+document.addEventListener('submit', (e) => {
+  e.preventDefault()
 })
 
 // popup sybmit function
 document.addEventListener('submit', async (e) => {
-  e.preventDefault()
-
-  if (e.target.closest('[id=loginForm]')) {
+  if (e.target.closest('#loginForm')) {
     const loginPopup = document.getElementById('login')
     let thereIsName = false,
       thereIsPass = false,
@@ -506,12 +606,10 @@ document.addEventListener('submit', async (e) => {
         `Welcome back, ${name}!`
       )
 
-      localStorage.setItem(
-        'profileData',
-        JSON.stringify(minimalizeObject(foundUser))
-      )
+      savingIntoLS('profileData', minimalizeObject(foundUser))
 
       loadingFromLS()
+
       destroyTimeout(loginPopup.id)
       return
     } else {
@@ -525,6 +623,90 @@ document.addEventListener('submit', async (e) => {
     }
   }
 })
+
+document.addEventListener('change', (e) => {
+  const input = e.target
+  if (input === signupEmail) {
+    if (validateEmail(input.value)) {
+      input.style.border = '1px solid #191847'
+      signupBtn.disabled = false
+    } else {
+      input.style.border = '1px solid red'
+      signupBtn.disabled = true
+    }
+  }
+})
+
+document.addEventListener('focusout', (e) => {
+  const input = e.target
+  const ifStatement = input.classList.contains('popup__input')
+
+  if (ifStatement && input.value.length > 0) {
+    const btn = input.closest('.popup__form').querySelector('[data-action]')
+    input.style.border = '1px solid #191847'
+    btn.disabled = false
+  }
+
+  if (ifStatement && !input.value.length) {
+    const btn = input.closest('.popup__form').querySelector('[data-action]')
+    input.style.border = '1px solid red'
+    btn.disabled = true
+  }
+})
+
+document.addEventListener('submit', async (e) => {
+  const signupForm = e.target.closest('#signupForm')
+
+  if (signupForm) {
+    const signupPopup = signupForm.closest('#signup')
+    const creationObj = {
+      firstName: signupFn.value,
+      lastName: signupLn.value,
+      email: signupEmail.value,
+      username: signupName.value,
+      password: signupPassword.value,
+      image: DEFAULT_IMAGE,
+    }
+
+    const newUser = await addNewUser(creationObj)
+
+    console.log(newUser)
+    showResultPopupMessage(
+      signupPopup,
+      'success__result-message',
+      `Welcome, ${newUser.username}!<br> We're glad to see you here!`
+    )
+
+    savingIntoLS('profileData', newUser)
+    loadingFromLS()
+    destroyTimeout(signupPopup.id)
+  }
+})
+
+async function addNewUser(newUser) {
+  const url = 'https://dummyjson.com/users/add'
+  const settings = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newUser),
+  }
+
+  try {
+    const fetchResponse = await fetch(url, settings)
+    const data = await fetchResponse.json()
+    return data
+  } catch (e) {
+    return e
+  }
+}
+
+function validateEmail(email) {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    )
+}
 
 // util function to  set timeout to popup hidding
 function popupTimeout(popup) {
@@ -545,10 +727,14 @@ function minimalizeObject(oldObj) {
   return {
     username: oldObj.username,
     password: oldObj.password,
-    img: oldObj.image,
+    image: oldObj.image,
     firstName: oldObj.firstName,
     lastName: oldObj.lastName,
   }
+}
+
+function savingIntoLS(key, value) {
+  localStorage.setItem(key, JSON.stringify(value))
 }
 
 // function to load data from LocalStorage
@@ -559,7 +745,7 @@ function loadingFromLS() {
   } else {
     authorizationList.style.display = 'none'
     profileHeader.style.display = 'flex'
-    profileHeaderImage.src = profileObj.img
+    profileHeaderImage.src = profileObj.image
     profileHeaderName.innerText = `${profileObj.firstName} ${profileObj.lastName}`
   }
 }
