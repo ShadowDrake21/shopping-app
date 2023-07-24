@@ -1,9 +1,14 @@
 // Getting all require elements by ids
-const productsForm = document.getElementById('productsForm')
-const productsSearch = document.getElementById('productsSearch')
-const productsBtn = document.getElementById('productsBtn')
-const productContainer = document.getElementById('product__container')
-const productsSection = document.getElementById('productsSection')
+
+import {
+  API_URL,
+  CATEGORIES_FRAGMENT,
+  DEFAULT_IMAGE,
+  LIMIT_FRAGMENT,
+  SEARCH_FRAGMENT,
+  USERS_API,
+} from './constants.js'
+import { cleanContent, renderMessage } from './util.js'
 
 const categoriesSection = document.getElementById('categoriesSection')
 const categoriesForm = document.getElementById('categoriesForm')
@@ -17,9 +22,7 @@ const usersSearch = document.getElementById('usersSearch')
 const usersBtn = document.getElementById('usersBtn')
 const usersContainer = document.getElementById('users__container')
 
-const title = productsSection.querySelector('.section__title')
 const menu = document.getElementById('menu')
-const menuLinks = document.querySelectorAll('.menu__item-link')
 const menuList = document.getElementById('menu__list')
 
 const authorizationList = document.getElementById('authorization__list')
@@ -44,113 +47,7 @@ let signupCloseBtn,
 
 let profileObj = {}
 
-// Constants for fetching
-const API_URL = 'https://dummyjson.com/products/'
-const USERS_API = 'https://dummyjson.com/users'
-const SEARCH_FRAGMENT = 'search?q='
-const CATEGORIES_FRAGMENT = 'category/'
-const LIMIT_FRAGMENT = '?limit='
-const DEFAULT_IMAGE =
-  'https://theculturednerd.org/wp-content/uploads/2021/10/hayden-christensen-star-wars.jpeg'
-
-renderMessage(
-  'initial__message',
-  `There is nothing here ;) <br>Type your query in the search field above`,
-  productContainer
-)
-
 loadingFromLS()
-
-// products form event, using of fetch
-productsForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
-  cleanContent(productContainer)
-  const searchTerm = e.target[0].value
-
-  const products = await fetch(API_URL + SEARCH_FRAGMENT + searchTerm).then(
-    (res) => res.json()
-  )
-  e.target[0].value = ''
-  title.innerText = searchTerm
-  renderProducts(products.products)
-})
-
-// function of rendering product items to the screen
-function renderProducts(productArr) {
-  cleanContent(productContainer)
-  if (!productArr.length) {
-    renderMessage(
-      'null__result-message',
-      `Ooops, it seems like there is nothing as a result of your search. <br> Search something else`,
-      productContainer
-    )
-  } else {
-    productArr.map((product) => {
-      const {
-        brand,
-        category,
-        description,
-        discountPercentage,
-        price,
-        rating,
-        stock,
-        thumbnail,
-        title,
-      } = product
-
-      const productWrapper = document.createElement('div')
-      productWrapper.classList.add('product')
-
-      productWrapper.innerHTML = `
-    <div class="product__left">
-      <img
-        class="product__img"
-        src="${thumbnail}"
-        alt=""
-      />
-    </div>
-    <div class="product__right">
-      <span class="product__category">${brand}</span>
-      <span class="product__category">${category}</span>
-      <h3 class="product__title">
-        ${title}
-      </h3>
-      <h6 class="product__price-old">${price}<span>$</span></h6>
-      <h4 class="product__price">${Math.round(
-        price - price * discountPercentage * 0.01
-      )}<span>$</span></h4>
-      <p class="product__descr">
-        ${description}
-      </p>
-      <div class="product__additional">
-        <div class="product__additional-text">
-          Rate:<span class="product__additional-number product__additional-rate"
-            >${rating}</span
-          >
-        </div>
-        <div class="product__additional-text">
-          Stock:<span class="product__additional-number product__additional-stock"
-            >${stock}</span
-          >
-        </div>
-      </div>
-      <button id="addToCart" class="product__btn">Add to cart</button>
-    </div>
-    `
-
-      productContainer.appendChild(productWrapper)
-    })
-  }
-}
-
-// function of message rendering
-function renderMessage(classPar, messagePar, container) {
-  const message = document.createElement('p')
-  message.classList.add(classPar)
-
-  message.innerHTML = messagePar
-  container.appendChild(message)
-}
 
 // menu usage, tabs cooperation, content hidding/showing
 menuList.addEventListener('click', (e) => {
@@ -776,11 +673,6 @@ signOutBtn.addEventListener('click', () => {
 // util function to set new value to display rule
 function setDisplay(el, value) {
   el.style.display = value
-}
-
-// util function to clean content of specified container
-function cleanContent(container) {
-  container.innerHTML = ''
 }
 
 // 9uQFF1Lh
