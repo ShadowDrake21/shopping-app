@@ -1,4 +1,8 @@
 import { DEFAULT_IMAGE } from './constants.js'
+import {
+  createLoginPopupWrapper,
+  createSignupPopupWrapper,
+} from './createElements.js'
 import { addNewUser, fetchAllUsers } from './get.js'
 import { loadingFromLS, savingIntoLS } from './localStorage.js'
 import { popupBackground } from './requiredElements.js'
@@ -64,37 +68,7 @@ export function createLogin() {
   popupWrapper.id = 'login'
   popupWrapper.dataset.popup = 'login'
 
-  popupWrapper.innerHTML = `
-      <div class="popup__inner">
-        <h2 class="popup__title">Log-in</h2>
-        <form class="form popup__form" id="loginForm">
-          <div class="popup__input-wrapper">
-            <label for="loginName" class="popup_label">Username:</label
-            ><input
-              type="text"
-              class="popup__input"
-              id="loginName"
-              placeholder="Enter your username"
-            />
-          </div>
-          <div class="popup__input-wrapper">
-            <label for="loginPassword" class="popup_label">Password:</label
-            ><input
-              type="password"
-              class="popup__input"
-              id="loginPassword"
-              placeholder="Enter your password"
-            />
-          </div>
-          <button type="submit" class="popup__btn" id="loginBtn" data-action='signup'>
-            Sign-in
-          </button>
-        </form>
-        <button type="button" data-action="popup__close" class="popup__close-btn">
-          <i class="fa fa-window-close" data-action="popup__close" aria-hidden="true"></i>
-        </button>
-      </div>
-  `
+  popupWrapper.innerHTML = createLoginPopupWrapper()
 
   return popupWrapper
 }
@@ -106,64 +80,7 @@ export function createSignup() {
   popupWrapper.id = 'signup'
   popupWrapper.dataset.popup = 'signup'
 
-  popupWrapper.innerHTML = `
-  <div class="popup__inner">
-    <h2 class="popup__title">Sign-up</h2>
-    <form class="form popup__form" id="signupForm">
-      <div class="popup__input-wrapper">
-        <label for="signupEmail" class="popup_label">Email:</label
-        ><input
-          type="text"
-          class="popup__input"
-          id="signupEmail"
-          placeholder="Enter your email"
-          />
-      </div>
-      <div class="popup__input-wrapper">
-        <label for="signupFn" class="popup_label">First name:</label
-        ><input
-          type="text"
-          class="popup__input"
-          id="signupFn"
-          placeholder="Enter your first name"
-        />
-      </div>
-      <div class="popup__input-wrapper">
-        <label for="signupLn" class="popup_label">Last name:</label
-        ><input
-          type="text"
-          class="popup__input"
-          id="signupLn"
-          placeholder="Enter your last name"
-        />
-      </div>
-      <div class="popup__input-wrapper">
-        <label for="signupName" class="popup_label">Username:</label
-        ><input
-          type="text"
-          class="popup__input"
-          id="signupName"
-          placeholder="Enter your username"
-        />
-      </div>
-      <div class="popup__input-wrapper">
-        <label for="signupPassword" class="popup_label">Password:</label
-        ><input
-          type="password"
-          class="popup__input"
-          id="signupPassword"
-          placeholder="Enter your password"
-        />
-      </div>
-      <button type="submit" class="popup__btn" id="signupBtn" data-action='signup'>
-        Sign-up
-      </button>
-    </form>
-    <button type="button" data-action="popup__close" class="popup__close-btn">
-      <i class="fa fa-window-close" data-action="popup__close" aria-hidden="true"></i>
-    </button>
-  </div>
-  `
+  popupWrapper.innerHTML = createSignupPopupWrapper()
 
   return popupWrapper
 }
