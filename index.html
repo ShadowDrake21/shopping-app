@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="img/icon.png" type="image/x-icon" />
     <link rel="stylesheet" href="./css/style.css" />
     <link
       rel="stylesheet"
@@ -90,66 +91,101 @@
         </nav>
       </div>
     </header>
-    <section class="section active" id="productsSection">
-      <div class="container">
-        <h1 class="section__title">Products</h1>
-        <form class="form" id="productsForm">
-          <input
-            type="text"
-            id="productsSearch"
-            class="search"
-            placeholder="Search a product"
-            autocomplete="off"
-          />
-          <button type="submit" id="productsBtn" class="search-btn">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
 
-        <div class="product__container" id="product__container"></div>
-      </div>
-    </section>
+    <main class="main">
+      <section class="section active" id="productsSection">
+        <div class="container">
+          <h1 class="section__title">Products</h1>
+          <form class="form" id="productsForm">
+            <input
+              type="text"
+              id="productsSearch"
+              class="search"
+              placeholder="Search a product"
+              autocomplete="off"
+            />
+            <button type="submit" id="productsBtn" class="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
 
-    <section class="section" id="categoriesSection">
-      <div class="container">
-        <h1 class="section__title">Categories</h1>
-        <form class="form" id="categoriesForm">
-          <input
-            type="text"
-            class="search"
-            id="categoriesSearch"
-            autocomplete="off"
-            placeholder="Search a category"
-          />
-          <button type="submit" id="categoriesBtn" class="search-btn">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
+          <div class="product__container" id="product__container"></div>
+        </div>
+      </section>
 
-        <div class="categories__container" id="categories__container"></div>
-      </div>
-    </section>
+      <section class="section" id="categoriesSection">
+        <div class="container">
+          <h1 class="section__title">Categories</h1>
+          <form class="form" id="categoriesForm">
+            <input
+              type="text"
+              class="search"
+              id="categoriesSearch"
+              autocomplete="off"
+              placeholder="Search a category"
+            />
+            <button type="submit" id="categoriesBtn" class="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
 
-    <section class="section" id="usersSection">
-      <div class="container">
-        <h1 class="section__title">All users</h1>
-        <form class="form" id="usersForm">
-          <input
-            type="text"
-            class="search"
-            id="usersSearch"
-            autocomplete="off"
-            placeholder="Search a user"
-          />
-          <button type="submit" id="usersBtn" class="search-btn">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
+          <div class="categories__container" id="categories__container"></div>
+        </div>
+      </section>
 
-        <div class="users__container" id="users__container"></div>
-      </div>
-    </section>
+      <section class="section" id="usersSection">
+        <div class="container">
+          <h1 class="section__title">All users</h1>
+          <form class="form" id="usersForm">
+            <input
+              type="text"
+              class="search"
+              id="usersSearch"
+              autocomplete="off"
+              placeholder="Search a user"
+            />
+            <button type="submit" id="usersBtn" class="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+
+          <div class="users__container" id="users__container"></div>
+        </div>
+      </section>
+    </main>
     <div class="popup__bg"></div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__inner">
+          <div class="footer__info">
+            <p class="footer__owner">Made by Dmitry "Drake" Krapyvianskyi</p>
+            <p class="footer__year">2023</p>
+          </div>
+          <ul class="footer__socials">
+            <li class="footer__socials-item">
+              <a
+                class="footer__socials-link"
+                href="https://github.com/ShadowDrake21"
+                target="_blank"
+                ><i class="fa-brands fa-github"></i
+              ></a>
+            </li>
+            <li class="footer__socials-item">
+              <a
+                class="footer__socials-link"
+                href="https://twitter.com/ShadowDrake_21"
+                target="_blank"
+                ><i class="fa-brands fa-twitter"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+        <p class="footer__copyright">
+          <i class="fa-solid fa-copyright"></i> All rights reserved
+        </p>
+      </div>
+    </footer>
 
     <script type="module" src="./js/script.js"></script>
     <script type="module" src="./js/menu.js"></script>
