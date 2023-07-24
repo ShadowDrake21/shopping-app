@@ -396,6 +396,7 @@ function initPopupElements(popupId) {
   }
 }
 
+// util function to initialized all elements of login popup
 function initLoginElements() {
   loginCloseBtn = document.getElementById('loginClose')
   loginBtn = document.getElementById('loginBtn')
@@ -404,6 +405,7 @@ function initLoginElements() {
   loginPassword = document.getElementById('loginPassword')
 }
 
+// util function to initialized all elements of signup popup
 function initSignupElements() {
   signupCloseBtn = document.getElementById('signupClose')
   signupBtn = document.getElementById('signupBtn')
@@ -563,11 +565,12 @@ document.addEventListener('click', (e) => {
   }
 })
 
+// common for all submit events
 document.addEventListener('submit', (e) => {
   e.preventDefault()
 })
 
-// popup sybmit function
+// login popup sybmit function
 document.addEventListener('submit', async (e) => {
   if (e.target.closest('#loginForm')) {
     const loginPopup = document.getElementById('login')
@@ -624,6 +627,7 @@ document.addEventListener('submit', async (e) => {
   }
 })
 
+// function for checking if input is empty
 document.addEventListener('change', (e) => {
   const input = e.target
   if (input === signupEmail) {
@@ -637,6 +641,7 @@ document.addEventListener('change', (e) => {
   }
 })
 
+// function for disable a submit btn whether one of the fields is empty or not
 document.addEventListener('focusout', (e) => {
   const input = e.target
   const ifStatement = input.classList.contains('popup__input')
@@ -654,6 +659,7 @@ document.addEventListener('focusout', (e) => {
   }
 })
 
+// signup popup sybmit function
 document.addEventListener('submit', async (e) => {
   const signupForm = e.target.closest('#signupForm')
 
@@ -683,6 +689,7 @@ document.addEventListener('submit', async (e) => {
   }
 })
 
+// fetch function to add new user
 async function addNewUser(newUser) {
   const url = 'https://dummyjson.com/users/add'
   const settings = {
@@ -700,6 +707,7 @@ async function addNewUser(newUser) {
   }
 }
 
+// util validate function for email
 function validateEmail(email) {
   return String(email)
     .toLowerCase()
@@ -733,6 +741,7 @@ function minimalizeObject(oldObj) {
   }
 }
 
+// function to save data into LocalStorage
 function savingIntoLS(key, value) {
   localStorage.setItem(key, JSON.stringify(value))
 }
@@ -750,10 +759,12 @@ function loadingFromLS() {
   }
 }
 
+// function to delete data from LocalStorage
 function deleteFromLS() {
   localStorage.removeItem('profileData')
 }
 
+// timeout function to signout from an account
 signOutBtn.addEventListener('click', () => {
   setTimeout(() => {
     setDisplay(profileHeader, 'none')
@@ -762,6 +773,7 @@ signOutBtn.addEventListener('click', () => {
   }, 500)
 })
 
+// util function to set new value to display rule
 function setDisplay(el, value) {
   el.style.display = value
 }
